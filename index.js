@@ -67,7 +67,7 @@ io.on('connection', function(socket){
 app.get('/', function(req, res){
 res.sendFile(__dirname + '/index.html');
 });
-const port = process.env.PORT || 3001
+const port=Number(process.env.PORT || 3000)
 http.listen(port, function(){
   console.log('listening on *:'+port);
 });
