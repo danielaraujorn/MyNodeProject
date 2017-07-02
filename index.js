@@ -19,8 +19,10 @@ var MySchema = new mongoose.Schema({
 var Posicao = mongoose.model('Posicoes',MySchema)
 
 io.on('connection', function(socket){
-	Posicao.find({},(err,posicoes)=>{
-		socket.emit('markers',posicoes);
+	socket.on('getMarkers',()=>{
+		Posicao.find({},(err,posicoes)=>{
+			socket.emit('markers',posicoes);
+		})
 	})
 	var ip= socket.request.headers['x-forwarded-for'] || socket.request.connection.remoteAddress;
 	socket.emit('returnip',ip)
@@ -62,7 +64,10 @@ io.on('connection', function(socket){
 		})
 	})
 });
-
-http.listen(80, function(){
-  console.log('listening on *:80');
+app.get('/', function(req, res){
+res.sendFile(__dirname + '/index.html');
+});
+const port = process.env.PORT || 3001
+http.listen(port, function(){
+  console.log('listening on *:'+port);
 });
