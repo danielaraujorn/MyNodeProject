@@ -24,6 +24,7 @@ io.on('connection', function(socket){
 			socket.emit('markers',posicoes);
 		})
 	})
+
 	var ip= socket.request.headers['x-forwarded-for'] || socket.request.connection.remoteAddress;
 	socket.emit('returnip',ip)
 	console.log("connected",ip);
@@ -43,6 +44,7 @@ io.on('connection', function(socket){
 				console.log('now = false',ip);
 		  	thisPosition.save();
 		  }
+		  socket.broadcast.emit('newMarker',thisPosition)
 		})
   });
 
@@ -61,6 +63,7 @@ io.on('connection', function(socket){
 				console.log('now = true',ip);
 		  	thisPosition.save();
 		  }
+		  socket.broadcast.emit('newMarker',thisPosition)
 		})
 	})
 });
